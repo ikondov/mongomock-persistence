@@ -7,7 +7,7 @@ With [mongomock](https://github.com/mongomock/mongomock) the documents are store
 
 ## How it works
 
-This package adds an option to store the database in a file. This is accomplished by small extensions of the classes in `store.py`. The file store is not intended to keep the database synchronized instantly on disk. Rather the database is eventually dumped to a file only just before the `ServerStore` object is destroyed. After that the file can be used to create other `ServerStore` objects in exactly that state as the original `ServerStore` object.
+This package adds an option to store the database in a file. This is accomplished by small extensions of the classes in `store.py`. These extensions are not intended to keep the database synchronized instantly on disk. Rather the database is eventually dumped to a file only just before the `ServerStore` object is destroyed. After that the file can be used to create other `ServerStore` objects in the final state of the original `ServerStore` object.
 
 ## When to use
 
@@ -52,9 +52,9 @@ mongo_client = MongoClient(_store=mongo_store)
 
 ## How to test
 
-Install the `tests` extra and then run `pytest`, i.e.
+Install the `test` extra and then run `pytest`, i.e.
 
 ```
-pip install mongomock-persistence[tests]
+pip install mongomock-persistence[test]
 pytest <root folder of repository>
 ```
