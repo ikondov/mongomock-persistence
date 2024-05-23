@@ -3,15 +3,21 @@
 This is a package based on the [mongomock](https://github.com/mongomock/mongomock)
 package to test any code using MongoDB via the [PyMongo API](https://pymongo.readthedocs.io).
 
-With [mongomock](https://github.com/mongomock/mongomock) the documents are stored in memory and not available after the process performing the tests exits. In some test cases it is necessary to have a non-volatile (persistent) storage of the database. For example, the tests of command line interfaces (CLI) require saving the database and making it available across several processes.
+With [mongomock](https://github.com/mongomock/mongomock) the documents are stored in memory and not available after the process performing the tests exits. In some test cases it is necessary to have a non-volatile (persistent) storage of the database. For example, tests of command line interfaces (CLI)  add things into the database and assume they are then available across several processes.
 
-This package adds an option to store the database in a file. This is accomplished by small extensions of the classes in `store.py`. The file store is not intended to keep database state instantly on disk. Rather the database is eventually dumped to a file just before the `ServerStore` object is destroyed.
+## How it works
 
-## When should I use mongomock-persistence?
+This package adds an option to store the database in a file. This is accomplished by small extensions of the classes in `store.py`. The file store is not intended to keep the database synchronized instantly on disk. Rather the database is eventually dumped to a file only just before the `ServerStore` object is destroyed. After that the file can be used to create other `ServerStore` objects in exactly that state as the original `ServerStore` object.
+
+## When to use
 
 1. In test cases where a database must be used by several consecutive processes and the database state has to be preserved in the meantimes.
 
 2. In tutorials to learn the basics of using PyMongo-based software.
+
+3. In further single-client applications of MongoDB.
+
+In all use cases one has to make sure that all PyMongo features used are covered by mongomock. See [this](https://github.com/mongomock/mongomock/blob/develop/Missing_Features.rst) for further details.
 
 ## How to install
 
@@ -50,5 +56,5 @@ Install the `tests` extra and then run `pytest`, i.e.
 
 ```
 pip install mongomock-persistence[tests]
-pytest <root flder of repository>
+pytest <root folder of repository>
 ```
